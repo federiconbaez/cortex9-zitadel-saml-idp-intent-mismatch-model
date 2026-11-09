@@ -1,0 +1,33 @@
+# id	kind	endpoint	path_idp	state_idp	signer	sp	in_response_to	name_id	shared_key	hand_pre	hand_post
+# Hand-derived labels. Tokens: @empty = "" (diff:94-112), @none = RelayState resolves to no intent/logout state.
+# Kinds: pos (advisory / integration test diff:137-193), diff (unit-test table diff:73-112), neg, adv.
+p01_ghsa_confused_acs	pos	acs	idp-a	idp-b	idp-a	idp-a	intent	victim-external-id	0	CONFUSED_SESSION	REJECT_IDP_MISMATCH
+p02_integration_shared_key	pos	acs	idp-a	idp-b	idp-a	idp-a	intent	victim-external-id	1	CONFUSED_SESSION	REJECT_IDP_MISMATCH
+p03_cross_to_carol	pos	acs	idp-a	idp-c	idp-a	idp-a	intent	carol-ext	0	CONFUSED_SESSION	REJECT_IDP_MISMATCH
+p04_attacker_on_c	pos	acs	idp-c	idp-b	idp-c	idp-c	intent	victim-external-id	0	CONFUSED_SESSION	REJECT_IDP_MISMATCH
+p05_slo_confused	pos	slo	idp-a	idp-b	idp-a	idp-a	intent	victim-external-id	0	CONFUSED_LOGOUT	REJECT_IDP_MISMATCH
+p06_slo_shared_key	pos	slo	idp-a	idp-b	idp-a	idp-a	intent	victim-external-id	1	CONFUSED_LOGOUT	REJECT_IDP_MISMATCH
+p07_confused_unlinked	pos	acs	idp-a	idp-b	idp-a	idp-a	intent	nobody	0	CONFUSED_NO_USER	REJECT_IDP_MISMATCH
+d01_match	diff	acs	idp-a	idp-a	idp-a	idp-a	intent	attacker-ext	0	SESSION	SESSION
+d02_mismatch	diff	acs	idp-a	idp-b	idp-a	idp-a	intent	victim-external-id	0	CONFUSED_SESSION	REJECT_IDP_MISMATCH
+d03_both_empty_acs	diff	acs	@empty	@empty	idp-a	idp-a	intent	victim-external-id	0	REJECT_PROVIDER	REJECT_PROVIDER
+d03b_both_empty_slo	diff	slo	@empty	@empty	idp-a	idp-a	intent	victim-external-id	0	REJECT_PROVIDER	REJECT_PROVIDER
+d04_one_empty	diff	acs	idp-a	@empty	idp-a	idp-a	intent	victim-external-id	0	CONFUSED_NO_USER	REJECT_IDP_MISMATCH
+n01_victim_legit	neg	acs	idp-b	idp-b	idp-b	idp-b	intent	victim-external-id	0	SESSION	SESSION
+n02_attacker_own	neg	acs	idp-a	idp-a	idp-a	idp-a	intent	attacker-ext	0	SESSION	SESSION
+n03_wrong_key_on_b	neg	acs	idp-b	idp-b	idp-a	idp-b	intent	victim-external-id	0	REJECT_SIGNATURE	REJECT_SIGNATURE
+n04_slo_legit	neg	slo	idp-b	idp-b	idp-b	idp-b	intent	victim-external-id	0	LOGOUT	LOGOUT
+n05_unknown_relaystate	neg	acs	idp-a	@none	idp-a	idp-a	intent	victim-external-id	0	REJECT_STATE	REJECT_STATE
+n06_legit_unlinked	neg	acs	idp-b	idp-b	idp-b	idp-b	intent	nobody	0	NO_USER	NO_USER
+n07_carol_legit_shared	neg	acs	idp-c	idp-c	idp-c	idp-c	intent	carol-ext	1	SESSION	SESSION
+a01_case_variant_acs	adv	acs	IDP-A	idp-a	idp-a	idp-a	intent	attacker-ext	0	REJECT_PROVIDER	REJECT_PROVIDER
+a02_case_variant_slo	adv	slo	IDP-B	idp-b	idp-b	idp-b	intent	victim-external-id	0	REJECT_PROVIDER	REJECT_IDP_MISMATCH
+a03_no_irt_copy	adv	acs	idp-a	idp-b	idp-a	idp-a	other	victim-external-id	0	REJECT_REQUEST_ID	REJECT_IDP_MISMATCH
+a04_victim_audience	adv	acs	idp-a	idp-b	idp-a	idp-b	intent	victim-external-id	0	REJECT_AUDIENCE	REJECT_IDP_MISMATCH
+a05_shared_key_wrong_sp	adv	acs	idp-b	idp-b	idp-a	idp-a	intent	victim-external-id	1	REJECT_AUDIENCE	REJECT_AUDIENCE
+a06_shared_key_forged_for_b	adv	acs	idp-b	idp-b	idp-a	idp-b	intent	victim-external-id	1	SESSION	SESSION
+a07_slo_unknown_state	adv	slo	idp-a	@none	idp-a	idp-a	intent	victim-external-id	0	REJECT_STATE	REJECT_STATE
+a08_replay_b_signed_to_a	adv	acs	idp-a	idp-b	idp-b	idp-b	intent	victim-external-id	0	REJECT_SIGNATURE	REJECT_IDP_MISMATCH
+a09_attacker_ext_under_b	adv	acs	idp-a	idp-b	idp-a	idp-a	intent	attacker-ext	0	CONFUSED_NO_USER	REJECT_IDP_MISMATCH
+a10_slo_one_empty	adv	slo	idp-a	@empty	idp-a	idp-a	intent	victim-external-id	0	CONFUSED_LOGOUT	REJECT_IDP_MISMATCH
+a11_slo_wrong_key	adv	slo	idp-a	idp-b	idp-b	idp-b	intent	victim-external-id	0	REJECT_SIGNATURE	REJECT_IDP_MISMATCH
